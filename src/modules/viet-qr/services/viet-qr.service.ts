@@ -134,7 +134,7 @@ export class VietQrService {
       return {
         message: 'Transaction processed successfully',
         refTransactionId,
-        amount: body.amount,
+        object: transactionCallback,
       };
     } catch (error) {
       throw new BadRequestException({ status: true, message: error.message });
