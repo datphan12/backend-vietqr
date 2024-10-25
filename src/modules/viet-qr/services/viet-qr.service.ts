@@ -9,6 +9,7 @@ import { ConfigService } from '@nestjs/config';
 import { VietQrTokenGenerateDto } from '../dtos/VietQrTokenGenerate.dto';
 import axios from 'axios';
 import { GenerateCustomerDto } from '../dtos/GenerateCustomer.dto';
+import { Response } from 'express';
 
 @Injectable()
 export class VietQrService {
@@ -102,7 +103,7 @@ export class VietQrService {
     }
   }
 
-  async handleTransactionSync(authHeader: string, body: any) {
+  async handleTransactionSync(authHeader: string, body: any, res: Response) {
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
       throw new UnauthorizedException(
         'Authorization header is missing or invalid',
@@ -131,25 +132,24 @@ export class VietQrService {
 
     try {
       const refTransactionId = '1234768993348789';
-      return {
-        statusCode: 200,
-        message: 'Transaction processed successfully',
-        data: {
-          refTransactionId,
-          transactionid: body.transactionid,
-          transactiontime: body.transactiontime,
-          referencenumber: body.referencenumber,
-          amount: body.amount,
-          content: body.content,
-          bankaccount: body.bankaccount,
-          orderId: body.orderId,
-          sign: body.sign,
-          terminalCode: body.terminalCode,
-          urlLink: body.urlLink,
-          serviceCode: body.serviceCode,
-          subTerminalCode: body.subTerminalCode,
-        },
-      };
+      return res.status(200).json({
+        transactionid: body.transactionid,
+        transactiontime: body.transactiontime,
+        referencenumber: body.referencenumber,
+        amount: body.amount,
+        content: body.content,
+        bankaccount: body.bankaccount,
+        orderId: body.orderId,
+        sign: body.sign,
+        terminalCode: body.terminalCode,
+        urlLink: body.urlLink,
+        serviceCode: body.serviceCode,
+        subTerminalCode: body.subTerminalCode,
+      });
+
+      // {
+      //   message: 'Transaction processed successfully',
+      // };
     } catch (error) {
       throw new BadRequestException({ status: true, message: error.message });
     }

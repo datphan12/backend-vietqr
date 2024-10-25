@@ -35,9 +35,9 @@ export class VietQrController {
     @Body() body: TransactionCallback,
     @Res() response: Response,
   ) {
-    // return this.vietQrService.handleTransactionSync(authHeader, body);
-    return response
-      .status(200)
-      .json(this.vietQrService.handleTransactionSync(authHeader, body));
+    return this.vietQrService.handleTransactionSync(authHeader, body, response);
+    // return response
+    //   .status(200)
+    //   .json(this.vietQrService.handleTransactionSync(authHeader, body));
   }
 }
