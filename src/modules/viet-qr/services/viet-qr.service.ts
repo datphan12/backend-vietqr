@@ -6,6 +6,9 @@ import {
 import { JwtService } from '@nestjs/jwt';
 import { TransactionCallback } from '../interfaces/TransactionCallback';
 import { ConfigService } from '@nestjs/config';
+import { VietQrTokenGenerateDto } from '../dtos/VietQrTokenGenerate.dto';
+import axios from 'axios';
+import { GenerateCustomerDto } from '../dtos/GenerateCustomer.dto';
 
 @Injectable()
 export class VietQrService {
@@ -13,13 +16,58 @@ export class VietQrService {
     private jwtService: JwtService,
     private configService: ConfigService,
   ) {}
-  getHello(): string {
-    return 'Hello World!';
+
+  async vietQrGenerateToken(vietQrGenerateTokenDto: VietQrTokenGenerateDto) {
+    try {
+      const response = await axios.post(
+        'https://dev.vietqr.org/vqr/api/token_generate',
+        {},
+        {
+          auth: {
+            username: vietQrGenerateTokenDto.username,
+            password: vietQrGenerateTokenDto.password,
+          },
+        },
+      );
+
+      if (response.data) {
+        return response.data;
+      } else {
+        console.log('Failed to login', response.status);
+      }
+    } catch (error) {
+      console.log('Error occurred:', error);
+    }
+  }
+
+  async vietQrGenerateCustomer(
+    token: string,
+    generateCustomerDto: GenerateCustomerDto,
+  ) {
+    try {
+      const response = await axios.post(
+        'https://dev.vietqr.org/vqr/api/qr/generate-customer',
+        generateCustomerDto,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `${token}`,
+          },
+        },
+      );
+
+      if (response.data) {
+        return response.data;
+      } else {
+        console.log('Failed to login', response.status);
+      }
+    } catch (error) {
+      return { error };
+    }
   }
 
   async generateToken(authHeader: string) {
-    console.log(this.configService.getOrThrow('SECRET_KEY'));
-
     if (!authHeader || !authHeader.startsWith('Basic ')) {
       throw new UnauthorizedException(
         'Authorization header is missing or invalid',
