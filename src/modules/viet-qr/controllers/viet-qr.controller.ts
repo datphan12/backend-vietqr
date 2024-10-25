@@ -23,12 +23,12 @@ export class VietQrController {
     );
   }
 
-  @Post('token-generate')
+  @Post('api/token_generate')
   generateToken(@Headers('authorization') authHeader: string) {
     return this.vietQrService.generateToken(authHeader);
   }
 
-  @Post('transaction-sync')
+  @Post('bank/api/transaction-sync')
   handleTransactionSync(
     @Headers('authorization') authHeader: string,
     @Body() body: TransactionCallback,

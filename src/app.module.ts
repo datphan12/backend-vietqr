@@ -5,8 +5,8 @@ import { ConfigModule } from '@nestjs/config';
 
 const routes: Routes = [
   {
-    path: '/v1',
-    children: [{ path: '/viet-qr', module: VietQrModule }],
+    path: '',
+    children: [{ path: '/vqr', module: VietQrModule }],
   },
 ];
 console.log('Current NODE_ENV:', process.env.NODE_ENV);
