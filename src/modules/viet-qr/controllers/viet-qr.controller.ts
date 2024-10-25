@@ -1,9 +1,9 @@
-import { Body, Controller, Get, Headers, Post } from '@nestjs/common';
+import { Body, Controller, Get, Headers, Post, Res } from '@nestjs/common';
 import { VietQrService } from '../services/viet-qr.service';
 import { TransactionCallback } from '../interfaces/TransactionCallback';
 import { VietQrTokenGenerateDto } from '../dtos/VietQrTokenGenerate.dto';
 import { GenerateCustomerDto } from '../dtos/GenerateCustomer.dto';
-import { response } from 'express';
+import { Response } from 'express';
 
 @Controller()
 export class VietQrController {
@@ -33,7 +33,7 @@ export class VietQrController {
   handleTransactionSync(
     @Headers('authorization') authHeader: string,
     @Body() body: TransactionCallback,
-    response,
+    @Res() response: Response,
   ) {
     // return this.vietQrService.handleTransactionSync(authHeader, body);
     return response
