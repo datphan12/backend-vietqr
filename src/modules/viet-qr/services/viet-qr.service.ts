@@ -134,7 +134,18 @@ export class VietQrService {
       return {
         message: 'Transaction processed successfully',
         refTransactionId,
-        id: body.transactionid,
+        transactionid: body.transactionid,
+        transactiontime: body.transactiontime,
+        referencenumber: body.referencenumber,
+        amount: body.amount,
+        content: body.content,
+        bankaccount: body.bankaccount,
+        orderId: body.orderId,
+        sign: body.sign,
+        terminalCode: body.terminalCode,
+        urlLink: body.urlLink,
+        serviceCode: body.serviceCode,
+        subTerminalCode: body.subTerminalCode,
       };
     } catch (error) {
       throw new BadRequestException({ status: true, message: error.message });
