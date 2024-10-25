@@ -3,6 +3,7 @@ import { VietQrService } from '../services/viet-qr.service';
 import { TransactionCallback } from '../interfaces/TransactionCallback';
 import { VietQrTokenGenerateDto } from '../dtos/VietQrTokenGenerate.dto';
 import { GenerateCustomerDto } from '../dtos/GenerateCustomer.dto';
+import { response } from 'express';
 
 @Controller()
 export class VietQrController {
@@ -32,7 +33,11 @@ export class VietQrController {
   handleTransactionSync(
     @Headers('authorization') authHeader: string,
     @Body() body: TransactionCallback,
+    response,
   ) {
-    return this.vietQrService.handleTransactionSync(authHeader, body);
+    // return this.vietQrService.handleTransactionSync(authHeader, body);
+    return response
+      .status(200)
+      .json(this.vietQrService.handleTransactionSync(authHeader, body));
   }
 }
